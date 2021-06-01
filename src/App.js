@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
-
+import Create from './components/Create';
+import Allposts from './components/Allposts';
+import Dislikedposts from './components/Dislikedposts'
+import {BrowserRouter as Router, Switch,Route} from 'react-router-dom';
 function App() {
   return (
+    <Router>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* navbar */}
+      <Switch>
+        
+        <Route exact path="/">
+          <Create/>
+        </Route>  
+        <Route exact path="/show">
+          <Allposts/>
+        </Route>
+        
+        <Route exact path="/disliked">
+          <Dislikedposts/>
+        </Route>
+        
+      </Switch>
     </div>
+    </Router>
   );
 }
 
