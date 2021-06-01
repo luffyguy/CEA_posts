@@ -6,7 +6,8 @@ import axios from 'axios'
 function Allposts(){
  
     const posts = useSelector(state=>state.posts);
-    const state = useSelector(state=>state);
+    const likes = useSelector(state=>state.likes);
+    const dislikes = useSelector(state=>state.dislikes);
 
     const dispatch = useDispatch();
     useEffect(()=>{
@@ -20,27 +21,43 @@ function Allposts(){
      .catch(err=>{
         dispatch({type:'FETCH_ERROR'})
      })}
-    ,[])
+    ,[dispatch])
     
     
     function handleDelete(id){
         axios.delete('https://jsonplaceholder.typicode.com/posts/'+id)
-        console.log(posts.post[2])
     }
 
     function handleLike(id){
-        //update if id does not exist
-        if(state.likes.liked.indexOf(id)===-1){
+        //update if id does not exist in liked or disliked
+
+        if(likes.liked.indexOf(id)===-1 && dislikes.disliked.indexOf(id)===-1 ){
             dispatch({type: 'LIKE',payload:id})
+        }  
+
+         //if post was previously disliked then remove from dislikes and add to like
+
+        else if(likes.liked.indexOf(id)===-1 && dislikes.disliked.indexOf(id)!==-1){
+            dispatch({type: 'LIKE',payload:id})
+            dislikes.disliked.splice(dislikes.disliked.indexOf(id),1)
+            dispatch({type: 'REMOVE_DISLIKE',payload:dislikes.disliked})
         }
-        console.log(state.likes.liked)
     }
 
     function handleDislike(id){
-        //update if id does not exist
-        if(state.dislikes.disliked.indexOf(id)===-1){
+
+        //update if id does not exist in liked or disliked
+
+        if(dislikes.disliked.indexOf(id)===-1 && likes.liked.indexOf(id)===-1){
             dispatch({type: 'DISLIKE',payload:id})
-            console.log(state.dislikes.disliked)
+        }
+
+         //if post was previously liked then remove from likes and add to dislikes
+
+        else if(likes.liked.indexOf(id)!==-1 && dislikes.disliked.indexOf(id)===-1){
+            dispatch({type: 'DISLIKE',payload:id})
+            likes.liked.splice(likes.liked.indexOf(id),1)
+            dispatch({type: 'REMOVE_LIKE',payload:likes.liked})
         }
     }
 
@@ -61,7 +78,7 @@ function Allposts(){
         )
     }
      
-    console.log(posts.post.data)
+
     return(
         <div>
            {posts.loading ? 
