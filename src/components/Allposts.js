@@ -2,9 +2,15 @@ import React from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {useEffect} from 'react'
 import axios from 'axios'
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import useStyles from '../styles/allpostsStyle'
+import { useHistory } from 'react-router-dom';
 
 function Allposts(){
- 
+    const classes =useStyles();
+    const history = useHistory();
+
     const posts = useSelector(state=>state.posts);
     const likes = useSelector(state=>state.likes);
     const dislikes = useSelector(state=>state.dislikes);
@@ -61,18 +67,31 @@ function Allposts(){
         }
     }
 
+    function handleEdit(id,title,body){
+        const pst={
+            id: id,
+            title: title,
+            body: body
+        }
+        dispatch({type: 'EDIT_POST',payload: pst})
+        history.push('/edit')
+    }
+
     const Allposts=()=>{
         return(
             <div>
              {posts.post.map((p)=>(
-                <div id={p.id}>
+                <Paper elevation={0} className={classes.paper} id={p.id}>
                     <p>{p.id}</p>
-                    <p>{p.title}</p>
-                    <button onClick={()=>handleDelete(p.id)}>delete</button>
-                    <button onClick={()=>handleLike(p.id)}>like</button>
-                    <button onClick={()=>handleDislike(p.id)}>dislike</button>
-                    <hr></hr>
-                </div> 
+                    <h4>{p.title}</h4>
+                    <p>{p.body}</p>
+                    <Button className={classes.btn1} onClick={()=>handleDelete(p.id)}>delete</Button>
+
+                    <Button className={classes.btn1} onClick={()=>handleEdit(p.id,p.title,p.body)}>edit</Button>
+
+                    <Button className={classes.likebtn} onClick={()=>handleLike(p.id)}>like</Button>
+                    <Button className={classes.dislikebtn} onClick={()=>handleDislike(p.id)}>dislike</Button>
+                </Paper> 
              ))}
             </div>
         )
@@ -80,7 +99,7 @@ function Allposts(){
      
 
     return(
-        <div>
+        <div className={classes.postContainer}>
            {posts.loading ? 
            'Loading...'
                 :
