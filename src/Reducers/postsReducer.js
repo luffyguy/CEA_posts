@@ -19,7 +19,7 @@ const postsReducer = (state = initState, action)=>{
 				loading: false,
 				post: {},
 				error: '500!'
-			}
+			}	
 		default:
 			return state    
     }
