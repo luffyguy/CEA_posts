@@ -1,4 +1,4 @@
-# CEA_posts
+# CEA_posts App
 
 Live Demo : https://posts2-e9683.web.app/
 
@@ -6,4 +6,6 @@ Live Demo : https://posts2-e9683.web.app/
 Different pages for each CRU Operation<br/>
 A functionality to like and dislike posts<br/>
 Different Pages for Liked and Disliked Posts<br/>
-Use Redux to store Liked and Disliked Posts and list of posts
+Use Redux to store Liked and Disliked Posts and list of posts<br/>
+Search using the search bar at realtime<br/>
+
